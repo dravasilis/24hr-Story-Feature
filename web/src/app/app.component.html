@@ -1,0 +1,7 @@
+<div class="w-full h-full flex flex-col ">
+  <app-stories-navigation [(showOverlay)]="showOverlay"></app-stories-navigation>
+  @if (showOverlay) {
+  <div (click)="showOverlay=false" class="fixed bg-[#00000075] w-full h-full "></div>
+  }
+
+</div>
