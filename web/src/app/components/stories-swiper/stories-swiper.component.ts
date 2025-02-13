@@ -3,11 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, ViewChild } from '@angular/core';
 import { register } from 'swiper/element/bundle';
-import { SwiperOptions } from 'swiper/types';
-import { Autoplay } from 'swiper/modules';
-import { Navigation, Pagination } from 'swiper/modules';
-
-// register Swiper custom elements
+import { Swiper, SwiperOptions } from 'swiper/types';
 @Component({
   selector: 'app-stories-swiper',
   standalone: true,
@@ -20,42 +16,56 @@ export class StoriesSwiperComponent {
   @Input() stories: string[] = [];
   @Input() indexToStart = 0;
   @ViewChild('progressBar') progressBar !: ElementRef<HTMLElement>;
+  @ViewChild('liveProgress') liveProgress !: ElementRef<HTMLElement>;
   loader = true;
+
   config: SwiperOptions = {
-    loop: false,
     spaceBetween: 10,
     slidesPerView: 1,
     rewind: true,
-    speed: 300,
-    modules: [Autoplay, Navigation, Pagination],
     autoplay: {
-      delay: 2000,
-      disableOnInteraction: false,
-    },
-    mousewheel: {
-      invert: true,
+      delay: 2500,
+      disableOnInteraction: false
     },
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
-    },
-
+    }
   };
+  autoplayInterval: any;
   ngOnInit() {
-    console.log(this.indexToStart);
-
+    //register swiper elements
+    register();
     const swiperEl = document.querySelector('swiper-container');
     if (!swiperEl) return;
-    Object.assign(swiperEl, { ...this.config, initialSlide: this.indexToStart });
-    // swiperEl.swiper.slideTo(this.indexToStart);
-    swiperEl.initialize();
-    setTimeout(() => {
-      swiperEl.swiper.slideTo(this.indexToStart);
-    }, 100);
-    // swiperEl.swiper.slideTo(this.indexToStart);
-    // setInterval(() => {
-    // swiperEl.swiper.slideNext();
-    // }, 2000);
+    Object.assign(swiperEl, { ...this.config });
+    swiperEl.swiper.slideTo(this.indexToStart);
+    const swiper: Swiper = swiperEl.swiper;
+    swiper.autoplay.start();
+    // Track progress continuously using setInterval
+    this.autoplayInterval = setInterval(() => {
+      this.updateProgress(swiper); // Update progress bar on each interval
+    }, 10);  // Check every 100ms to track progress
   }
 
-}
+  updateProgress(swiper: Swiper) {
+    // Get the current time left (remaining autoplay time)
+    const timeLeft = swiper.autoplay.timeLeft;
+    const delay = 2500;
+
+    // Calculate progress as percentage from 0 to 100 based on timeLeft
+    const progress = ((delay - timeLeft) / delay) * 100;  // Normalize to 0-100%
+
+    // Update the progress bar width
+    if (this.liveProgress) {
+      this.liveProgress.nativeElement.style.width = `${progress}%`;  // Update progress bar width
+    }
+  }
+
+  ngOnDestroy() {
+    // Clear the interval when the component is destroyed
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+    }
+  }
+} 

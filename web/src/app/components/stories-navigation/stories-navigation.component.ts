@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { StoriesSwiperComponent } from "../stories-swiper/stories-swiper.component";
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-stories-navigation',
@@ -20,7 +21,6 @@ export class StoriesNavigationComponent {
   savePhoto(event: Event) {
     const input = event.target as HTMLInputElement;
     const image = input?.files ? input.files[0] : null;
-    console.log(image);
     if (image) {
       this.convertToBase64(image);
     }
@@ -29,10 +29,18 @@ export class StoriesNavigationComponent {
   convertToBase64(image: File): void {
     const reader = new FileReader();
     reader.readAsDataURL(image); // Read the file as base64 encoded string
-
     reader.onload = () => {
       // The result will be a base64 string, and we store it in `imageBase64`
-      localStorage.setItem('stories', JSON.stringify([...this.stories ?? [], reader.result]));
+      try {
+        localStorage.setItem('stories', JSON.stringify([...this.stories ?? [], reader.result]));
+      } catch (error: any) {
+        if (error.name === 'QuotaExceededError') {
+          alert('File size is too large. Please select a smaller file.');
+        }
+        else {
+          alert('Unknown error.');
+        }
+      }
       this.stories = JSON.parse(localStorage.getItem('stories') as string);
     };
 

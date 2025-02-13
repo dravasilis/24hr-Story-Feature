@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { StoriesNavigationComponent } from './components/stories-navigation/stories-navigation.component';
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -11,4 +10,5 @@ import { StoriesNavigationComponent } from './components/stories-navigation/stor
 export class AppComponent {
   showOverlay = false;
   title = 'web';
+
 }

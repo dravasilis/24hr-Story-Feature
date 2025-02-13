@@ -8,8 +8,11 @@
         <input #uploader accept=".jpg, .jpeg, .png, .svg" hidden="true" id="uploader" type="file"
             (change)="savePhoto($event)">
         @for (story of stories; track $index) {
-        <button (click)="triggerStoriesView($index)" class="rounded-full p-[2px] border-2 border-[#6e4d16]">
-            <img class="rounded-full w-[40px] h-[40px]" [src]="story" alt="storyUrl">
+        <button (click)="triggerStoriesView($index)" class="rounded-full duration-200 active:scale-95">
+            <div [style.background]="'linear-gradient(rgb(187 39 2) 0%, rgb(149 116 8) 82%)'"
+                class="p-[2px] rounded-full">
+                <img class="rounded-full w-[40px] h-[40px] object-contain bg-black" [src]="story" alt="storyUrl">
+            </div>
         </button>
         }
     </div>

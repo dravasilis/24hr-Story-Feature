@@ -1,17 +1,22 @@
-<div class="flex flex-col w-[25rem] h-[30rem]">
-    <div #progressBar class="flex">
-        @for (story of stories; track $index) {
-        <div [ngClass]="{
-                'rounded-s-xl':$index===0,
-                'rounded-e-xl':$index===stories.length-1,
-                '!bg-white': $index <= swiperEl.swiper.activeIndex
-            }" class="flex bg-[#7979798c] w-full z-50  border border-black py-[2px] px-2"></div>
-        }
+<div class="flex flex-col w-[30rem] h-[40rem]">
+    <div class="flex flex-col">
+        <div #progressBar class="flex ">
+            @for (story of stories; track $index) {
+            <div [ngClass]="{
+                    'rounded-s-xl':$index===0,
+                    'rounded-e-xl':$index===stories.length-1,
+                    '!bg-white': $index <= swiperEl.swiper.activeIndex
+                }" class="flex bg-[#7979798c] w-full z-50  border border-black py-[2px] px-2"></div>
+            }
+        </div>
+        <div class="flex w-full py-[2px] bg-[#ffffff6b] relative">
+            <div #liveProgress id="liveProgress" class="bg-[#ffffff8a] w-0 h-full absolute left-0 top-0  "></div>
+        </div>
     </div>
-    <swiper-container #swiperEl class=" z-50 w-full h-full">
+    <swiper-container #swiperEl class=" z-50 w-full h-full" mousewheel="true" effect="coverflow">
         @for (story of stories; track $index) {
         <swiper-slide>
-            <img [src]="story" alt="storyPhoto" class="w-full  h-full rounded-lg">
+            <img [src]="story" alt="storyPhoto" class="w-full bg-black object-contain h-full rounded-lg">
         </swiper-slide>
         }
     </swiper-container>
