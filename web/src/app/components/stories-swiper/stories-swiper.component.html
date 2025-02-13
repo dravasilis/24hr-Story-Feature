@@ -16,7 +16,7 @@
     <swiper-container #swiperEl class=" z-50 w-full h-full" mousewheel="true" effect="coverflow">
         @for (story of stories; track $index) {
         <swiper-slide>
-            <img [src]="story" alt="storyPhoto" class="w-full bg-black object-contain h-full rounded-lg">
+            <img [src]="story.imageUrl" alt="storyPhoto" class="w-full bg-black object-contain h-full rounded-lg">
         </swiper-slide>
         }
     </swiper-container>

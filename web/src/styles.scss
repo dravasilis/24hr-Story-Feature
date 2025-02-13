@@ -13,3 +13,29 @@ body {
 :root {
     --swiper-navigation-color: #E49A38;
 }
+
+//SCROLLBAR
+::-webkit-scrollbar {
+    width: 4px;
+    height: 8px;
+}
+
+
+::-webkit-scrollbar-track-piece:end {
+    margin-bottom: 2rem;
+}
+
+::-webkit-scrollbar-track-piece:start {
+    margin-top: 2rem;
+
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3rem;
+
+    &:hover {
+        cursor: grab;
+    }
+
+    background: #9A9A9A;
+}

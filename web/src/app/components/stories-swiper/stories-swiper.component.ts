@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, ViewChild } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 import { Swiper, SwiperOptions } from 'swiper/types';
+import { Story } from '../../interfaces/story';
 @Component({
   selector: 'app-stories-swiper',
   standalone: true,
@@ -13,7 +14,7 @@ import { Swiper, SwiperOptions } from 'swiper/types';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],  // Allow custom elements (web components),
 })
 export class StoriesSwiperComponent {
-  @Input() stories: string[] = [];
+  @Input() stories: Story[] = [];
   @Input() indexToStart = 0;
   @ViewChild('progressBar') progressBar !: ElementRef<HTMLElement>;
   @ViewChild('liveProgress') liveProgress !: ElementRef<HTMLElement>;
@@ -38,9 +39,11 @@ export class StoriesSwiperComponent {
     register();
     const swiperEl = document.querySelector('swiper-container');
     if (!swiperEl) return;
+    //assign configurations to swiper
     Object.assign(swiperEl, { ...this.config });
     swiperEl.swiper.slideTo(this.indexToStart);
     const swiper: Swiper = swiperEl.swiper;
+    //start autoplay
     swiper.autoplay.start();
     // Track progress continuously using setInterval
     this.autoplayInterval = setInterval(() => {
