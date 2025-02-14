@@ -10,7 +10,7 @@
             (change)="savePhoto($event)">
         @for (story of stories; track $index) {
         <button (click)="triggerStoriesView($index)" class="rounded-full duration-200 active:scale-95  ">
-            <div [style.background]="'linear-gradient(rgb(187 39 2) 0%, rgb(149 116 8) 82%)'"
+            <div [style.background]="story.viewed?'linear-gradient(rgb(187 39 2 / 39%) 0%, rgb(149 116 8 / 17%) 82%)': 'linear-gradient(rgb(187 39 2) 0%, rgb(149 116 8) 82%)'"
                 class="p-[2px] rounded-full w-max">
                 <img class="rounded-full w-[50px] h-[50px] object-contain bg-black" [src]="story.imageUrl"
                     alt="storyUrl">

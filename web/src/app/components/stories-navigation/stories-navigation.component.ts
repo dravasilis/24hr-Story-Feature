@@ -38,13 +38,16 @@ export class StoriesNavigationComponent {
       // Construct the story object with the image and timestamp
       const newStory: Story = {
         imageUrl: reader.result as string,
-        timestamp: timestamp
+        timestamp: timestamp,
+        viewed: false
       };
 
       try {
         //save to local storage
-        localStorage.setItem('stories', JSON.stringify([...this.stories ?? [], newStory]));
+        localStorage.setItem('stories', JSON.stringify([newStory, ...this.stories ?? []]));
       } catch (error: any) {
+        console.error(error);
+
         if (error.name === 'QuotaExceededError') {
           alert('File size is too large. Please select a smaller file.');
         }

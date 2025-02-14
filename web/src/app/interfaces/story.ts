@@ -1,4 +1,5 @@
 export interface Story {
     imageUrl: string,
-    timestamp: number;
+    timestamp: number,
+    viewed: boolean;
 }

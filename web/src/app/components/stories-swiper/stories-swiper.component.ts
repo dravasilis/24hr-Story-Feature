@@ -49,20 +49,41 @@ export class StoriesSwiperComponent {
     this.autoplayInterval = setInterval(() => {
       this.updateProgress(swiper); // Update progress bar on each interval
     }, 10);  // Check every 100ms to track progress
+
+    //set initially clicked story  as viewed
+    this.setStoryAsViewed(this.indexToStart);
+    //set stories brought into view as viewed
+    swiper.on('slideChange', (e) => {
+      this.setStoryAsViewed(e.activeIndex);
+    });
   }
 
   updateProgress(swiper: Swiper) {
     // Get the current time left (remaining autoplay time)
     const timeLeft = swiper.autoplay.timeLeft;
     const delay = 2500;
-
     // Calculate progress as percentage from 0 to 100 based on timeLeft
     const progress = ((delay - timeLeft) / delay) * 100;  // Normalize to 0-100%
 
     // Update the progress bar width
     if (this.liveProgress) {
+      window.scroll();
       this.liveProgress.nativeElement.style.width = `${progress}%`;  // Update progress bar width
     }
+  }
+  setStoryAsViewed(activeIndex: number) {
+    if (this.stories[activeIndex].viewed === false) {
+      this.stories[activeIndex].viewed = true;
+      this.setToTail(activeIndex);
+      //update local storage
+      localStorage.setItem('stories', JSON.stringify(this.stories));
+    }
+  }
+
+  setToTail(index: number) {
+    const story = this.stories[index];
+    this.stories.splice(index, 1);
+    this.stories.push(story);
   }
 
   ngOnDestroy() {
